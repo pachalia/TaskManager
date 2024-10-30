@@ -15,5 +15,6 @@ export const getElements = () => {
     taskForm: document.querySelector('.create-task-block') as HTMLFormElement,
     tasksList: document.querySelector('.tasks-list') as HTMLDivElement,
     taskError: document.querySelector('.error-message-block') as HTMLDivElement,
+    modal: document.querySelector('.modal-overlay') as HTMLDivElement,
   }
 }
