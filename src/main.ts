@@ -28,32 +28,56 @@ const taskManager = () => {
     tasksList.append(taskItem)
   })
   taskForm.addEventListener('submit', (e: SubmitEvent) => {
+    const { taskError } = getElements()
     e.preventDefault()
+    if (taskError) {
+      taskError.remove()
+    }
     const { target } = e as ITaskFormEvent
     const text: string = target.taskName.value
-    const _newTask: ITask = {
-      id: Date.now().toString(),
-      text,
-      completed: false,
-    }
-    tasks.push(_newTask)
-    const taskItem = createElement(
-      'div',
-      null,
-      { attrib: 'class', value: 'task-item' },
-      { attrib: 'data-task-id', value: _newTask.id },
-    )
-    const newTaskElement = createElement(
-      'div',
-      text,
-      {
+    if (!text) {
+      const taskError = createElement('div', null, {
         attrib: 'class',
-        value: 'task-item__text',
-      },
-      { attrib: 'id', value: `task-${tasks.length}` },
-    )
-    taskItem.append(newTaskElement)
-    tasksList.append(taskItem)
+        value: 'error-message-block',
+      })
+      taskError.append(
+        createElement('span', 'Название задачи не должно быть пустым'),
+      )
+      taskForm.append(taskError)
+    } else if (tasks.find((value) => value.text === text)) {
+      const taskError = createElement('div', null, {
+        attrib: 'class',
+        value: 'error-message-block',
+      })
+      taskError.append(
+        createElement('span', 'Задача с таким названием уже существует.'),
+      )
+      taskForm.append(taskError)
+    } else {
+      const _newTask: ITask = {
+        id: Date.now().toString(),
+        text,
+        completed: false,
+      }
+      tasks.push(_newTask)
+      const taskItem = createElement(
+        'div',
+        null,
+        { attrib: 'class', value: 'task-item' },
+        { attrib: 'data-task-id', value: _newTask.id },
+      )
+      const newTaskElement = createElement(
+        'div',
+        text,
+        {
+          attrib: 'class',
+          value: 'task-item__text',
+        },
+        { attrib: 'id', value: `task-${tasks.length}` },
+      )
+      taskItem.append(newTaskElement)
+      tasksList.append(taskItem)
+    }
   })
 }
 
