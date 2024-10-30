@@ -18,3 +18,30 @@ export const getElements = () => {
     modal: document.querySelector('.modal-overlay') as HTMLDivElement,
   }
 }
+
+export type theme = 'light' | 'dark'
+
+export const changeTheme = (theme: theme) => {
+  switch (theme) {
+    case 'light':
+      document.querySelector<HTMLBodyElement>('body').style.background =
+        'initial'
+      document.querySelectorAll<HTMLDivElement>('.task-item').forEach((val) => {
+        val.style.color = 'initial'
+      })
+      document.querySelectorAll<HTMLButtonElement>('button').forEach((val) => {
+        val.style.border = 'none'
+      })
+      break
+    case 'dark':
+      document.querySelector<HTMLBodyElement>('body').style.background =
+        '#24292E'
+      document.querySelectorAll<HTMLDivElement>('.task-item').forEach((val) => {
+        val.style.color = '#ffffff'
+      })
+      document.querySelectorAll<HTMLButtonElement>('button').forEach((val) => {
+        val.style.border = '1px solid #ffffff'
+      })
+      break
+  }
+}

@@ -1,10 +1,11 @@
-import { createElement, getElements } from './utils/util.js'
+import { changeTheme, createElement, getElements, theme } from './utils/util.js'
 import { tasks } from './DB/task.db.js'
 import { ITaskFormEvent } from './interfaces/task-form.event.interface.js'
 import { ITask } from './interfaces/task.interface.js'
 import { IModalEvent } from './interfaces/modal-event.interface.js'
 
 const taskManager = () => {
+  let theme: theme = 'light'
   const { taskForm, tasksList, modal } = getElements()
   tasks.forEach((val, index) => {
     const taskItem = createElement(
@@ -32,7 +33,10 @@ const taskManager = () => {
     taskItem.append(task, taskItemButtonDelete)
     tasksList.append(taskItem)
   })
+  changeTheme(theme)
+
   taskForm.addEventListener('submit', (e: SubmitEvent) => {
+    changeTheme(theme)
     const { taskError } = getElements()
     e.preventDefault()
     taskError ? taskError.remove() : null
@@ -84,6 +88,7 @@ const taskManager = () => {
       })
       taskItem.append(newTaskElement, taskItemButtonDelete)
       tasksList.append(taskItem)
+      changeTheme(theme)
     }
   })
   tasksList.addEventListener('click', (e: MouseEvent) => {
@@ -113,6 +118,14 @@ const taskManager = () => {
           modal.classList.add('modal-overlay_hidden')
         }
       })
+    }
+  })
+
+  document.querySelector('body').addEventListener('keydown', (e) => {
+    const { key } = e
+    if (key === 'Tab') {
+      theme === 'light' ? (theme = 'dark') : (theme = 'light')
+      changeTheme(theme)
     }
   })
 }
